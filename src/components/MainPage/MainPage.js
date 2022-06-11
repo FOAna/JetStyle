@@ -1,6 +1,6 @@
 import AddBook from '../AddBook/AddBook';
 import { useEffect, useState } from 'react';
-import dorian from '../../images/Dorian.jpg';
+import jacket from '../../images/book.jpg';
 import EditBook from '../EditBook/EditBook';
 import DeleteBook from '../DeleteBook/DeleteBook';
 
@@ -22,11 +22,14 @@ export default function MainPage() {
           bookData[1].length > 20
             ? `${bookData[1].substring(0, 20)}...`
             : bookData[1];
+        const image = bookData[2].length
+          ? localStorage.getItem(bookData[2])
+          : jacket;
         cards.push(
           <div className='MainPage__book' key={key}>
             <img
               className='MainPage__bookJacket'
-              src={dorian}
+              src={image}
               alt='Обложка книги'
             />
             <p className='MainPage__bookName'>{name}</p>
@@ -37,6 +40,7 @@ export default function MainPage() {
                 itemKey={key}
                 name={bookData[0]}
                 author={bookData[1]}
+                image={bookData[2]}
                 change={onChangedBooks}
               />
               <DeleteBook
@@ -44,6 +48,7 @@ export default function MainPage() {
                 itemKey={key}
                 name={bookData[0]}
                 author={bookData[1]}
+                image={bookData[2]}
                 change={onChangedBooks}
               />
             </div>

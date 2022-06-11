@@ -10,15 +10,36 @@ import './EditBook.css';
 export default function EditBook(props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setImage(null);
+  };
   const onChangedBooks = props.change;
 
   const [name, setName] = useState(props.name);
   const [author, setAuthor] = useState(props.author);
+  const [image, setImage] = useState(null);
+
   const submit = () => {
+    console.log('--- ', name, props.image, image);
     localStorage.removeItem(props.itemKey);
     const id = `bookid:${name}${author}`.toLowerCase();
-    localStorage.setItem(id, `${name}#|#${author}`);
+    localStorage.setItem(
+      id,
+      `${name}#|#${author}#|#${image ? image.name : ''}`
+    );
+    if (image) {
+      if (image.name !== props.image) {
+        localStorage.removeItem(props.image);
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        localStorage.setItem(image.name, reader.result);
+      };
+      reader.readAsDataURL(image);
+    } else if (props.image.length) {
+      localStorage.removeItem(props.image);
+    }
     onChangedBooks();
     handleClose();
   };
@@ -63,6 +84,13 @@ export default function EditBook(props) {
               onChange={(event) => setAuthor(event.target.value)}
             />
           </FloatingLabel>
+          <Form.Group controlId='formFile' className='mb-3 EditBook__fileInput'>
+            <Form.Control
+              type='file'
+              accept='image/*'
+              onChange={(event) => setImage(event.target.files[0])}
+            />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleClose}>
@@ -74,7 +102,10 @@ export default function EditBook(props) {
             disabled={
               name.length > 0 &&
               author.length > 3 &&
-              (name !== props.name || author !== props.author)
+              (name !== props.name ||
+                author !== props.author ||
+                (image && image.name !== props.image) ||
+                (props.image.length && !image))
                 ? false
                 : true
             }

@@ -1,3 +1,6 @@
 .EditBook__button.EditBook__button {
   padding: 0 6px 4px;
 }
+.EditBook__fileInput {
+  margin-top: 16px;
+}

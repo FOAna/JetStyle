@@ -13,6 +13,7 @@ export default function DeleteBook(props) {
 
   const submit = () => {
     localStorage.removeItem(props.itemKey);
+    localStorage.removeItem(props.image);
     onChangedBooks();
     handleClose();
   };

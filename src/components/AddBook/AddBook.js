@@ -9,15 +9,29 @@ import './AddBook.css';
 export default function AddBook(props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setImage(null);
+  };
   const onChangedBooks = props.change;
 
   const [name, setName] = useState('');
   const [author, setAuthor] = useState('');
+  const [image, setImage] = useState(null);
 
   const submit = () => {
     const id = `bookid:${name}${author}`.toLowerCase();
-    localStorage.setItem(id, `${name}#|#${author}`);
+    localStorage.setItem(
+      id,
+      `${name}#|#${author}#|#${image ? image.name : ''}`
+    );
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        localStorage.setItem(image.name, reader.result);
+      };
+      reader.readAsDataURL(image);
+    }
     onChangedBooks();
     handleClose();
   };
@@ -57,7 +71,11 @@ export default function AddBook(props) {
             />
           </FloatingLabel>
           <Form.Group controlId='formFile' className='mb-3 AddBook__fileInput'>
-            <Form.Control type='file' accept='image/*' />
+            <Form.Control
+              type='file'
+              accept='image/*'
+              onChange={(event) => setImage(event.target.files[0])}
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

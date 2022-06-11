@@ -1,5 +1,68 @@
+.MainPage {
+  padding: 64px 32px 32px;
+}
 .MainPage__addButton {
   position: absolute;
   top: 16px;
   right: 16px;
+}
+.MainPage__book {
+  display: inline-block;
+  border: 1px solid #8fbcff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 16px;
+  margin: 16px;
+  position: relative;
+  width: 240px;
+  height: 380px;
+}
+.MainPage__book:hover {
+  box-shadow: 0 0 16px 1px #8fbcff;
+}
+.MainPage__bookJacket {
+  width: 145px;
+  height: 205px;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+.MainPage__bookButtons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.MainPage__bookEdit.MainPage__bookEdit,
+.MainPage__bookDelete.MainPage__bookDelete {
+  margin: 4px;
+  border: 1px solid #8fbcff;
+  background-color: white;
+}
+.MainPage__bookEdit.MainPage__bookEdit:hover,
+.MainPage__bookDelete.MainPage__bookDelete:hover {
+  border: 1px solid #8fbcff;
+  background: radial-gradient(ellipse at 50% 50%, #cbe0ff 0%, #ffffff 100%);
+}
+.MainPage__bookEdit.MainPage__bookEdit:focus,
+.MainPage__bookDelete.MainPage__bookDelete:focus {
+  border: 1px solid #8fbcff;
+  background: radial-gradient(ellipse at 50% 50%, #cbe0ff 0%, #ffffff 100%);
+  box-shadow: 0 0 6px #8fbcff;
+}
+.MainPage__bookName,
+.MainPage__bookAuthor {
+  margin: 0;
+}
+.MainPage__bookName {
+  font-size: 16px;
+  font-weight: bold;
+}
+.MainPage__bookAuthor {
+  font-size: 12px;
+  margin-top: 4px;
+}
+.MainPage__bookCards {
+  display: flex;
+  flex-wrap: wrap;
 }

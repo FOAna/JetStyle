@@ -1,23 +1,25 @@
-import './AddBook.css';
 import Modal from 'react-bootstrap/esm/Modal';
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/esm/Form';
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 import { useState } from 'react';
 
+import './AddBook.css';
+
 export default function AddBook(props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const onChangedBooks = props.change;
 
   const [name, setName] = useState('');
   const [author, setAuthor] = useState('');
+
   const submit = () => {
-    if (name.length > 0 && author.length > 3) {
-      const id = `bookid:${name}${author}`.toLowerCase();
-      localStorage.setItem(id, `${name}#|#${author}`);
-      handleClose();
-    }
+    const id = `bookid:${name}${author}`.toLowerCase();
+    localStorage.setItem(id, `${name}#|#${author}`);
+    onChangedBooks();
+    handleClose();
   };
 
   return (
@@ -54,12 +56,19 @@ export default function AddBook(props) {
               onChange={(event) => setAuthor(event.target.value)}
             />
           </FloatingLabel>
+          <Form.Group controlId='formFile' className='mb-3 AddBook__fileInput'>
+            <Form.Control type='file' accept='image/*' />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleClose}>
             Отмена
           </Button>
-          <Button variant='primary' onClick={submit}>
+          <Button
+            variant='primary'
+            onClick={submit}
+            disabled={name.length > 0 && author.length > 3 ? false : true}
+          >
             Сохранить
           </Button>
         </Modal.Footer>

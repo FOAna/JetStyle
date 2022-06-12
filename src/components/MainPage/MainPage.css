@@ -1,10 +1,15 @@
 .MainPage {
-  padding: 64px 32px 32px;
+  padding: 16px 90px 16px 16px;
 }
-.MainPage__addButton {
-  position: absolute;
+.MainPage__rightButtons {
+  position: fixed;
   top: 16px;
   right: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.MainPage__rightButtons .MainPage__button_add.MainPage__button_add {
+  margin-bottom: 12px;
 }
 .MainPage__book {
   display: inline-block;
@@ -27,25 +32,23 @@
   object-fit: cover;
 }
 .MainPage__bookButtons {
+  visibility: hidden;
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 12px;
   right: 12px;
 }
-.MainPage__bookEdit.MainPage__bookEdit,
-.MainPage__bookDelete.MainPage__bookDelete {
+.MainPage__button.MainPage__button {
   margin: 4px;
   border: 1px solid #8fbcff;
   background-color: white;
 }
-.MainPage__bookEdit.MainPage__bookEdit:hover,
-.MainPage__bookDelete.MainPage__bookDelete:hover {
+.MainPage__button.MainPage__button:hover {
   border: 1px solid #8fbcff;
   background: radial-gradient(ellipse at 50% 50%, #cbe0ff 0%, #ffffff 100%);
 }
-.MainPage__bookEdit.MainPage__bookEdit:focus,
-.MainPage__bookDelete.MainPage__bookDelete:focus {
+.MainPage__button.MainPage__button:focus {
   border: 1px solid #8fbcff;
   background: radial-gradient(ellipse at 50% 50%, #cbe0ff 0%, #ffffff 100%);
   box-shadow: 0 0 6px #8fbcff;

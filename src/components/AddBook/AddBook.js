@@ -3,14 +3,17 @@ import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/esm/Form';
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
 import { useState } from 'react';
+import { BiBookAdd } from 'react-icons/bi';
 
 import './AddBook.css';
 
 export default function AddBook(props) {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const date = new Date();
+
+  const [isShow, setIsShow] = useState(false);
+  const handleClose = () => setIsShow(false);
   const handleShow = () => {
-    setShow(true);
+    setIsShow(true);
     setImage(null);
   };
   const onChangedBooks = props.change;
@@ -23,7 +26,7 @@ export default function AddBook(props) {
     const id = `bookid:${name}${author}`.toLowerCase();
     localStorage.setItem(
       id,
-      `${name}#|#${author}#|#${image ? image.name : ''}`
+      `${name}#|#${author}#|#${image ? image.name : ''}#|#${date.getTime()}`
     );
     if (image) {
       const reader = new FileReader();
@@ -38,12 +41,16 @@ export default function AddBook(props) {
 
   return (
     <>
-      <Button className={props.className} variant='light' onClick={handleShow}>
-        Добавить новую книгу
+      <Button
+        className={`AddBook__button ${props.className}`}
+        variant='light'
+        onClick={handleShow}
+      >
+        <BiBookAdd className='AddBook__ico' />
       </Button>
 
       <Modal
-        show={show}
+        show={isShow}
         onHide={handleClose}
         backdrop='static'
         keyboard={false}

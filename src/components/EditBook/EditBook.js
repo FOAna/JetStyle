@@ -8,10 +8,12 @@ import { GrEdit } from 'react-icons/gr';
 import './EditBook.css';
 
 export default function EditBook(props) {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const date = new Date();
+
+  const [isShow, setIsShow] = useState(false);
+  const handleClose = () => setIsShow(false);
   const handleShow = () => {
-    setShow(true);
+    setIsShow(true);
     setImage(null);
   };
   const onChangedBooks = props.change;
@@ -21,12 +23,11 @@ export default function EditBook(props) {
   const [image, setImage] = useState(null);
 
   const submit = () => {
-    console.log('--- ', name, props.image, image);
     localStorage.removeItem(props.itemKey);
     const id = `bookid:${name}${author}`.toLowerCase();
     localStorage.setItem(
       id,
-      `${name}#|#${author}#|#${image ? image.name : ''}`
+      `${name}#|#${author}#|#${image ? image.name : ''}#|#${date.getTime()}`
     );
     if (image) {
       if (image.name !== props.image) {
@@ -55,7 +56,7 @@ export default function EditBook(props) {
       </Button>
 
       <Modal
-        show={show}
+        show={isShow}
         onHide={handleClose}
         backdrop='static'
         keyboard={false}

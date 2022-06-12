@@ -1,3 +1,9 @@
 .AddBook__fileInput {
   margin-top: 16px;
 }
+.AddBook__ico {
+  font-size: 32px;
+}
+.AddBook__button.AddBook__button {
+  padding: 12px 16px;
+}

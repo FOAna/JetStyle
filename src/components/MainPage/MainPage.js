@@ -7,56 +7,81 @@ import DeleteBook from '../DeleteBook/DeleteBook';
 import './MainPage.css';
 
 export default function MainPage() {
-  const [bookCards, setBookCards] = useState([]);
+  const [cards, setCards] = useState([]);
 
   const onChangedBooks = () => {
-    const cards = [];
+    const books = [];
     for (let key in localStorage) {
       if (localStorage.hasOwnProperty(key) && /^bookid:/.test(key)) {
         const bookData = localStorage.getItem(key).split(/#\|#/);
-        const name =
-          bookData[0].length > 65
-            ? `${bookData[0].substring(0, 65)}...`
-            : bookData[0];
-        const author =
-          bookData[1].length > 20
-            ? `${bookData[1].substring(0, 20)}...`
-            : bookData[1];
-        const image = bookData[2].length
-          ? localStorage.getItem(bookData[2])
-          : jacket;
-        cards.push(
-          <div className='MainPage__book' key={key}>
-            <img
-              className='MainPage__bookJacket'
-              src={image}
-              alt='Обложка книги'
-            />
-            <p className='MainPage__bookName'>{name}</p>
-            <p className='MainPage__bookAuthor'>{author}</p>
-            <div className='MainPage__bookButtons'>
-              <EditBook
-                className='MainPage__bookEdit'
-                itemKey={key}
-                name={bookData[0]}
-                author={bookData[1]}
-                image={bookData[2]}
-                change={onChangedBooks}
-              />
-              <DeleteBook
-                className='MainPage__bookDelete'
-                itemKey={key}
-                name={bookData[0]}
-                author={bookData[1]}
-                image={bookData[2]}
-                change={onChangedBooks}
-              />
-            </div>
-          </div>
-        );
+        books.push({
+          key: key,
+          name: bookData[0],
+          author: bookData[1],
+          image: bookData[2],
+          date: bookData[3],
+        });
       }
     }
-    setBookCards(cards);
+
+    setCards(
+      books
+        .sort((a, b) => {
+          return b.date - a.date;
+        })
+        .map((book) => {
+          return (
+            <div
+              className='MainPage__book'
+              key={book.key}
+              onMouseEnter={(event) => {
+                document.getElementById(book.key).style.visibility = 'visible';
+              }}
+              onMouseLeave={(event) => {
+                document.getElementById(book.key).style.visibility = 'hidden';
+              }}
+            >
+              <img
+                className='MainPage__bookJacket'
+                src={
+                  book.image.length ? localStorage.getItem(book.image) : jacket
+                }
+                width='145px'
+                height='205px'
+                alt='Картинка ждёт обновления страницы, чтобы появиться)'
+              />
+              <p className='MainPage__bookName'>
+                {book.name.length > 65
+                  ? `${book.name.substring(0, 65)}...`
+                  : book.name}
+              </p>
+              <p className='MainPage__bookAuthor'>
+                {book.author.length > 45
+                  ? `${book.author.substring(0, 45)}...`
+                  : book.author}
+              </p>
+              <div className='MainPage__bookButtons' id={book.key}>
+                <EditBook
+                  className='MainPage__button'
+                  itemKey={book.key}
+                  name={book.name}
+                  author={book.author}
+                  image={book.image}
+                  change={onChangedBooks}
+                />
+                <DeleteBook
+                  className='MainPage__button'
+                  itemKey={book.key}
+                  name={book.name}
+                  author={book.author}
+                  image={book.image}
+                  change={onChangedBooks}
+                />
+              </div>
+            </div>
+          );
+        })
+    );
   };
 
   useEffect(() => {
@@ -65,8 +90,14 @@ export default function MainPage() {
 
   return (
     <div className='MainPage'>
-      <AddBook className='MainPage__addButton' change={onChangedBooks} />
-      <div className='MainPage__bookCards'>{bookCards}</div>
+      <div className='MainPage__rightButtons'>
+        <AddBook
+          className='MainPage__button MainPage__button_add'
+          change={onChangedBooks}
+        />
+        <DeleteBook className='MainPage__button' all change={onChangedBooks} />
+      </div>
+      <div className='MainPage__bookCards'>{cards}</div>
     </div>
   );
 }
